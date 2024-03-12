@@ -22,4 +22,6 @@
 /* Add custom styles for login and register pages */
 .card {
   margin-top: 50px; /* Adjust card margin for better alignment */
+  border-radius: 30px; /* Adjust the value as needed */
 }
+

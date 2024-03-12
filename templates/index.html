@@ -19,6 +19,48 @@
             padding: 20px;
             border-radius: 10px;
         }
+
+        /* Button colors */
+        .btn {
+            border-radius: 10px;
+            margin-right: 10px;
+            border: 2px solid transparent;
+        }
+
+        .btn-mobilesam {
+            color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-mobilesam:hover, .btn-mobilesam:focus {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-cnn {
+            color: #28a745;
+            border-color: #28a745;
+        }
+
+        .btn-cnn:hover, .btn-cnn:focus {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .btn-grounded {
+            color: #dc3545;
+            border-color: #dc3545;
+        }
+
+        .btn-grounded:hover, .btn-grounded:focus {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        /* Upload Image section */
+        .upload-section {
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -27,14 +69,21 @@
 
 <div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
     <div class="container-box col-lg-6 col-md-8 col-sm-10">
-        <div class="mb-3">
+        <!-- Button for selecting MobileSAM -->
+        <button type="button" class="btn btn-mobilesam">MobileSAM</button>
+        <!-- Button for selecting CNN -->
+        <button type="button" class="btn btn-cnn">CNN</button>
+        <!-- Button for selecting Grounded-MobileSAM -->
+        <button type="button" class="btn btn-grounded">Grounded-MobileSAM</button>
+        <!-- Upload Image section -->
+        <div class="upload-section">
             <label for="inputGroupFile" class="form-label">Upload Image</label>
             <div class="input-group">
                 <input type="file" class="form-control custom-file-input" id="inputGroupFile" aria-describedby="inputGroupFileAddon" accept="image/*">
                 <label class="custom-file-label" for="inputGroupFile">Choose file</label>
             </div>
         </div>
-        <button class="btn btn-primary btn-block">Segment Image</button>
+        <button class="btn btn-primary btn-block mt-3">Segment Image</button>
     </div>
 </div>
 
