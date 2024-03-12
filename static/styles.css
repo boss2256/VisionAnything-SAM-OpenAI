@@ -1,0 +1,25 @@
+/* styles.css */
+
+/* Apply custom styles to the flash messages */
+.alert-error {
+  color: white;
+  background-color: #dc3545; /* Red color for error messages */
+  border-color: #dc3545;
+}
+
+.alert-success {
+  color: white;
+  background-color: #28a745; /* Green color for success messages */
+  border-color: #28a745;
+}
+
+.alert-warning {
+  color: white;
+  background-color: #ffc107; /* Yellow color for warning messages */
+  border-color: #ffc107;
+}
+
+/* Add custom styles for login and register pages */
+.card {
+  margin-top: 50px; /* Adjust card margin for better alignment */
+}
