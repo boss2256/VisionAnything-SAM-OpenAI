@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VisionAnything</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-image: url("/static/cat_fruits.png");
+            background-size: cover;
+            background-position: center;
+            color: black; /* Added text color */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            max-width: 600px;
+        }
+        .welcome-text {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .btn-container {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="overlay">
+            <div class="row justify-content-center">
+                <div class="col-md-12">
+                    <div class="welcome-text">
+                        <h1>Welcome to VisionAnything</h1>
+                        <p>Explore our platform by logging in or registering below.</p>
+                    </div>
+                    <div class="btn-container">
+                        <a href="{{ url_for('login') }}" class="btn btn-primary mr-3">Login</a>
+                        <a href="{{ url_for('register') }}" class="btn btn-success">Register</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

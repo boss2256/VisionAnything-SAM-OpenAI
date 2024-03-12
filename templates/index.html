@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - VisionAnything</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-image: url("/static/cat_fruits.png");
+            background-size: cover;
+            background-position: center;
+            color: black; /* Added text color */
+        }
+
+        /* Container styles */
+        .container-box {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+{% include 'navbar/navbar.html' %}
+
+<div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="container-box col-lg-6 col-md-8 col-sm-10">
+        <div class="mb-3">
+            <label for="inputGroupFile" class="form-label">Upload Image</label>
+            <div class="input-group">
+                <input type="file" class="form-control custom-file-input" id="inputGroupFile" aria-describedby="inputGroupFileAddon" accept="image/*">
+                <label class="custom-file-label" for="inputGroupFile">Choose file</label>
+            </div>
+        </div>
+        <button class="btn btn-primary btn-block">Segment Image</button>
+    </div>
+</div>
+
+<script>
+    document.getElementById('inputGroupFile').addEventListener('change', function(e) {
+        var fileName = e.target.files[0].name;
+        var maxLength = 20; // Maximum length for the file name
+        var label = document.querySelector('.custom-file-label');
+        if (fileName.length > maxLength) {
+            // Truncate the file name if it exceeds the maximum length
+            fileName = fileName.substr(0, maxLength) + '...';
+        }
+        label.textContent = fileName;
+    });
+</script>
+
+</body>
+</html>
