@@ -12,7 +12,7 @@ from flask_login import current_user
 
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 app.config['SECRET_KEY'] = 'your_secret_key_here'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -131,6 +131,11 @@ def logout():
 @login_required
 def index():
     return render_template('index.html')
+
+@app.route('/mobilesam')
+@login_required
+def mobilesam():
+    return render_template('mobilesam.html')
 
 with app.app_context():
     try:
