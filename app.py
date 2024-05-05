@@ -166,8 +166,11 @@ def log_message():
 # Define the route for making predictions
 @app.route('/make_prediction', methods=['POST'])
 def make_prediction():
-    # OpenAI API Key
-    api_key = "sk-proj-vYB6U34zh0eHoObVFTJET3BlbkFJpZx0s7KgJrIxFcppyxvi"
+    import os
+
+    api_key = os.getenv("API_KEY")
+    if not api_key:
+        raise ValueError("API_KEY is not set in environment variables")
 
     # Function to encode the image
     def encode_image(image_path):
