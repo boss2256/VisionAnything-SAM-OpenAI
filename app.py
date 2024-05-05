@@ -9,7 +9,9 @@ import os
 from flask import flash
 from flask_login import login_required
 from flask_login import current_user
-
+import requests
+import base64
+from flask import jsonify
 
 
 app = Flask(__name__, static_folder='static')
@@ -136,6 +138,117 @@ def index():
 @login_required
 def mobilesam():
     return render_template('mobilesam.html')
+
+
+
+
+
+# LOGGING FILE
+# Function to log messages to a file
+def log_to_file(message):
+    log_file_path = 'console_log.txt'
+    with open(log_file_path, 'a') as log_file:
+        log_file.write(message + '\n')
+
+@app.route('/log_message', methods=['POST'])
+def log_message():
+    data = request.get_json()
+    if 'message' in data:
+        message = data['message']
+        log_to_file(message)
+        return jsonify({'status': 'success'})
+    else:
+        return jsonify({'error': 'Message not provided'}), 400
+
+
+
+
+# Define the route for making predictions
+@app.route('/make_prediction', methods=['POST'])
+def make_prediction():
+    # OpenAI API Key
+    api_key = "sk-proj-vYB6U34zh0eHoObVFTJET3BlbkFJpZx0s7KgJrIxFcppyxvi"
+
+    # Function to encode the image
+    def encode_image(image_path):
+        with open(image_path, "rb") as image_file:
+            return base64.b64encode(image_file.read()).decode('utf-8')
+
+    # Path to your image
+    image_path = "assets/masked_image.png"
+
+    # Getting the base64 string
+    base64_image = encode_image(image_path)
+
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {api_key}"
+    }
+
+    payload = {
+        "model": "gpt-4-turbo",
+        "messages": [
+            {
+                "role": "user",
+                "content": [
+                    {
+                        "type": "text",
+                        "text": "Only tell me what is the red masked object and the confidence score like this, there can only be 1 masked object that is this color #ff7f7f, make the first letter of the object capital letter, the masked object will be highlighted {object: confidence%}. 1 object has only 1 red mask."
+                    },
+                    {
+                        "type": "image_url",
+                        "image_url": {
+                            "url": f"data:image/png;base64,{base64_image}"
+                        }
+                    }
+                ]
+            }
+        ],
+        "max_tokens": 300
+    }
+
+    response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
+
+    # Extract the content from the response
+    content = response.json()['choices'][0]['message']['content']
+
+    # Remove quotes and curly braces
+    content = content.replace('"', '').replace('{', '').replace('}', '')
+
+    # Print the content in the Python terminal
+    print(content)
+
+    # Return only the content as JSON response
+    return jsonify(content)
+
+
+
+
+
+
+
+
+@app.route('/save_masked_image', methods=['POST'])
+def save_masked_image():
+    try:
+        data = request.json
+        masked_image_data_url = data['masked_image_data_url']
+
+        # Extract the base64 data from the data URL
+        base64_str = masked_image_data_url.split(',')[1]
+        img_data = base64.b64decode(base64_str)
+
+        # Define the path to save the masked image
+        save_path = os.path.join(app.root_path, 'assets', 'masked_image.png')
+
+        # Save the masked image
+        with open(save_path, 'wb') as f:
+            f.write(img_data)
+
+        return jsonify({'message': 'Masked image saved successfully'}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 
 with app.app_context():
     try:

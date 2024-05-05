@@ -56,11 +56,6 @@
             background-color: #dc3545;
             color: white;
         }
-
-        /* Upload Image section */
-        .upload-section {
-            margin-top: 20px;
-        }
     </style>
 </head>
 <body>
@@ -68,34 +63,52 @@
 {% include 'navbar/navbar.html' %}
 
 <div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
-    <div class="container-box col-lg-6 col-md-8 col-sm-10">
+    <div class="container-box col-lg-8 col-md-10 col-sm-12">
         <!-- Button for selecting MobileSAM -->
         <button type="button" class="btn btn-mobilesam">MobileSAM</button>
-        <!-- Button for selecting Grounded-MobileSAM -->
-        <button type="button" class="btn btn-grounded">Grounded-MobileSAM</button>
-        <!-- Upload Image section -->
-        <div class="upload-section">
-            <label for="inputGroupFile" class="form-label">Upload Image</label>
-            <div class="input-group">
-                <input type="file" class="form-control custom-file-input" id="inputGroupFile" aria-describedby="inputGroupFileAddon" accept="image/*">
-                <label class="custom-file-label" for="inputGroupFile">Choose file</label>
-            </div>
-        </div>
-        <button class="btn btn-primary btn-block mt-3">Segment Image</button>
+        <!-- Placeholder where MobileSAM content will be loaded -->
+        <div id="mobilesam-content"></div>
     </div>
 </div>
 
 <script>
-    document.getElementById('inputGroupFile').addEventListener('change', function(e) {
-        var fileName = e.target.files[0].name;
-        var maxLength = 20; // Maximum length for the file name
-        var label = document.querySelector('.custom-file-label');
-        if (fileName.length > maxLength) {
-            // Truncate the file name if it exceeds the maximum length
-            fileName = fileName.substr(0, maxLength) + '...';
-        }
-        label.textContent = fileName;
+document.addEventListener('DOMContentLoaded', function() {
+    const mobilesamButton = document.querySelector('.btn-mobilesam');
+    const contentContainer = document.getElementById('mobilesam-content');
+
+    mobilesamButton.addEventListener('click', function() {
+        // Hide the MobileSAM button immediately when clicked
+        mobilesamButton.style.display = 'none';
+
+        fetch('/mobilesam')
+        .then(response => {
+            if (response.ok) return response.text();
+            throw new Error('Failed to load the MobileSAM page');
+        })
+        .then(html => {
+            contentContainer.innerHTML = html;
+            contentContainer.style.display = 'block';
+            // Now invoke any scripts or reinitialize functionalities
+            executeScriptsFromContent(contentContainer);
+        })
+        .catch(error => {
+            console.error('Error loading MobileSAM:', error);
+            // Show the button again if there is an error loading the content
+            mobilesamButton.style.display = 'block';
+        });
     });
+});
+
+function executeScriptsFromContent(container) {
+    Array.from(container.querySelectorAll("script")).forEach(oldScript => {
+        const newScript = document.createElement("script");
+        Array.from(oldScript.attributes)
+            .forEach(attr => newScript.setAttribute(attr.name, attr.value));
+        newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+        oldScript.parentNode.replaceChild(newScript, oldScript);
+    });
+}
+
 </script>
 
 </body>
