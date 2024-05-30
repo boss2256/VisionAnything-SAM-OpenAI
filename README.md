@@ -1,6 +1,7 @@
 # VisionAnything-SAM-OpenAI
 
 ![VisionAnything-SAM-OpenAI](https://miro.medium.com/v2/resize:fit:640/format:webp/0*oY5iH4bwb4JhZ2N_.png)
+![Prediction Example](prediction.png)
 
 A real-time image segmentation application using the Segment Anything Model (SAM) and deep learning to assist in children's cognitive development by identifying everyday objects.
 
